@@ -35,7 +35,7 @@ class PostController extends Controller
     public function create(Post $post)
     {
         $registro = User::all();
-        if(Gate::denies('create-post', $registro))
+        if(Gate::denies('create_post', $registro))
         {
             return response()->view('errors.custom', [], 500);     
         }
@@ -73,8 +73,10 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        if(Gate::denies('delete-post', $post))
-            abort(403, 'Não Autorizado');
+        if(Gate::denies('delete_post', $registro))
+        {
+            return response()->view('errors.custom', [], 500);     
+        }
         $post->delete();
 
         \Session::flash('flash_message',[
@@ -95,8 +97,10 @@ class PostController extends Controller
     {
         $registro = Post::find($id);
         //$this->authorize('update-post', $registro);
-        if(Gate::denies('edit-post', $registro))
-            abort(403, 'Não Autorizado');
+        if(Gate::denies('edit_post', $registro))
+        {
+            return response()->view('errors.custom', [], 500);     
+        }
         return view('post.edit',compact('registro'));
     }
 
